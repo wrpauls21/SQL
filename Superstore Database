@@ -29,22 +29,22 @@ VALUES
 
 --Questions to Answer
 --1 order the items by price
-Select item_name, price
+SELECT item_name, price
 FROM superstore
-Order By price;
+ORDER BY price;
 
 --2 show a statistic about the item prices
-Select category, AVG(price)
-From superstore
-Group By category;
+SELECT category, AVG(price)
+FROM superstore
+GROUP BY category;
 
 --3 show a statistic about the price for items in the category of "Kitchen Supplies"
-Select category, MAX(price)
-From superstore
-Where category = "Kitchen Supplies";
+SELECT category, MAX(price)
+FROM superstore
+WHERE category = "Kitchen Supplies";
 
 --4 How many of each category in stock
-Select category, SUM(stock_quantity)
-From superstore
-Group By category;
+SELECT category, SUM(stock_quantity)
+FROM superstore
+GROUP BY category;
     
