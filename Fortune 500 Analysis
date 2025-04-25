@@ -1,4 +1,4 @@
--- 1. [filter using WHERE with AND, OR, IN, or NOT IN] Which companies have healthcare benefits and at least 20 paid time off days and average tenure of at least 5?
+-- 1. Which companies have healthcare benefits and at least 20 paid time off days and average tenure of at least 5?
 SELECT company_name
 FROM fortune_companies
 WHERE paid_time_off_days>=20
@@ -6,13 +6,13 @@ AND healthcare_benefits=1
 AND avg_employee_tenure >= 5
 ;
 
--- 2. [calculation and alias] What is the Revenue per Employee for each Company sorted by most to least? 
+-- 2. What is the Revenue per Employee for each Company sorted by most to least? 
 SELECT company_name, revenue/employees AS revenue_per_employee
 FROM fortune_companies
 ORDER BY revenue_per_employee desc
 ;
 
--- 3. [CASE] Communicate whether Healthcare benefits are offered and how much PTO in weeks each company offers 
+-- 3. Communicate whether Healthcare benefits are offered and how much PTO in weeks each company offers 
 SELECT company_name,
 CASE WHEN healthcare_benefits=1  THEN "Offers Healthcare Benefits"
 ELSE "No Healthcare Benefits offered" END AS offers_healthcare,
@@ -22,11 +22,18 @@ WHEN paid_time_off_days >=7 THEN "1+ Week PTO"
 ELSE "Under 1 Week PTO" END AS pto_amount
 FROM fortune_companies
 ;
--- 4. [HAVING] Which Companies have a revenue per employee greater than or equal to .1 
+
+-- 4. Which Companies have a revenue per employee greater than or equal to .1 
 SELECT company_name,
 revenue/employees AS revenue_per_employee
 FROM fortune_companies
 GROUP BY company_name
 HAVING revenue_per_employee >= .1
 ;
--- 5. [up to me!]
+
+-- 5. Which companie have more than 200 in revenue with under 3000 employees
+SELECT company_name
+FROM fortune_companies
+WHERE revenue>200
+AND employees<3000
+;
