@@ -60,42 +60,49 @@ VALUES
 
 # Analysis: 
 
-# 1. Which companies have healthcare benefits and at least 20 paid time off days and average tenure of at least 5?
+# 1. Which companies in the healthcare industry offer no healthcare to employees
 SELECT company_name
 FROM fortune_companies
-WHERE paid_time_off_days>=20
-AND healthcare_benefits=1
-AND avg_employee_tenure >= 5
+WHERE industry ='Healthcare'
+AND healthcare_benefits=0
 ;
 
 # 2. What is the Revenue per Employee for each Company sorted by most to least? 
-SELECT company_name, revenue/employees AS revenue_per_employee
+SELECT company_name, ROUND(revenue/employees*1000,1) AS revenue_per_employee_millions
 FROM fortune_companies
-ORDER BY revenue_per_employee desc
+ORDER BY revenue_per_employee_millions desc
 ;
 
-# 3. Communicate whether Healthcare benefits are offered and how much PTO in weeks each company offers 
+# 3. Communicate whether Healthcare benefits are offered and quality of PTO and Maternal care offerings
 SELECT company_name,
-CASE WHEN healthcare_benefits=1  THEN "Offers Healthcare Benefits"
-ELSE "No Healthcare Benefits offered" END AS offers_healthcare,
-CASE WHEN paid_time_off_days >=21 THEN "3+ Weeks PTO"
-WHEN paid_time_off_days >=14 THEN "2+ Weeks PTO"
-WHEN paid_time_off_days >=7 THEN "1+ Week PTO"
-ELSE "Under 1 Week PTO" END AS pto_amount
+CASE 
+WHEN healthcare_benefits=1  THEN 'Offers Healthcare Benefits'
+ELSE 'No Healthcare Benefits offered' END AS offers_healthcare,
+CASE
+WHEN paid_time_off_days >=21 THEN 'Excellent PTO Offerings'
+WHEN paid_time_off_days >=14 THEN 'Good PTO offerings'
+WHEN paid_time_off_days >=7 THEN 'Poor PTO Offerings'
+ELSE 'Awful PTO Offerings' END AS pto_offering,
+CASE 
+WHEN maternity_leave_weeks >= 10 THEN 'mother friendly workplace'
+WHEN maternity_leave_weeks >= 8 THEN 'acceptable'
+ELSE 'abysmal'
+END as mother_friendliness
 FROM fortune_companies
 ;
 
-# 4. Which Companies have a revenue per employee greater than or equal to .1 
-SELECT company_name,
-revenue/employees AS revenue_per_employee
+# 4. Which industries have an average revenue of at least $100 Billion, and what are their avg revenues?
+SELECT industry, ROUND(AVG(revenue),1) as avg_revenue_billions
 FROM fortune_companies
-GROUP BY company_name
-HAVING revenue_per_employee >= .1
+GROUP BY industry
+HAVING avg_revenue_billions>=100
 ;
 
-# 5. Which companie have more than 200 in revenue with under 3000 employees
-SELECT company_name
+# 5. Which companies have more than 200 billion in revenue and don't offer healthcare. Sort by least amount of employees to most. 
+SELECT company_name, employees
 FROM fortune_companies
 WHERE revenue>200
-AND employees<3000
+AND healthcare_benefits = 0
+ORDER BY employees
 ;
+
